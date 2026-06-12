@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartemenController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JabatanController;
@@ -51,16 +52,14 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 */
 Route::middleware('auth')->group(function () {
 
-    Route::get('/dashboard', function () {
-        return view('dashboard.index');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     /*
     |----------------------------------------------------------------------
-    | Manajemen Organisasi (admin, kaprodi, pembina)
+    | Manajemen Organisasi (admin, pembina)
     |----------------------------------------------------------------------
     */
-    Route::middleware('role:administrator,kaprodi,pembina')->group(function () {
+    Route::middleware('role:administrator,pembina')->group(function () {
         Route::resource('kepengurusan', KepengurusanController::class);
         Route::patch('kepengurusan/{kepengurusan}/activate', [KepengurusanController::class, 'activate'])->name('kepengurusan.activate');
         Route::patch('kepengurusan/{kepengurusan}/deactivate', [KepengurusanController::class, 'deactivate'])->name('kepengurusan.deactivate');
@@ -70,7 +69,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('jabatan', JabatanController::class)->except(['show']);
     });
 
-    // Anggota — semua role bisa melihat, tapi CRUD hanya admin/kaprodi/pembina
+    // Anggota — semua role bisa melihat, tapi CRUD hanya admin/pembina
     Route::resource('anggota', AnggotaController::class)
         ->parameters(['anggota' => 'anggota'])
         ->except(['show']);
@@ -81,7 +80,7 @@ Route::middleware('auth')->group(function () {
     |----------------------------------------------------------------------
     */
     Route::resource('kategori-proker', KategoriProkerController::class)->except(['show'])
-        ->middleware('role:administrator,kaprodi,pembina');
+        ->middleware('role:administrator,pembina');
     Route::resource('program-kerja', ProgramKerjaController::class);
 
     /*

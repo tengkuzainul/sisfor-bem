@@ -29,8 +29,6 @@ class ProposalKegiatan extends Model
     const STATUS_DIAJUKAN        = 'diajukan';
     const STATUS_REVIEW_PEMBINA  = 'review_pembina';
     const STATUS_REVISI_PEMBINA  = 'revisi_pembina';
-    const STATUS_REVIEW_KAPRODI  = 'review_kaprodi';
-    const STATUS_REVISI_KAPRODI  = 'revisi_kaprodi';
     const STATUS_DISETUJUI       = 'disetujui';
     const STATUS_DITOLAK         = 'ditolak';
 
@@ -63,8 +61,6 @@ class ProposalKegiatan extends Model
             self::STATUS_DIAJUKAN        => 'Diajukan',
             self::STATUS_REVIEW_PEMBINA  => 'Review Pembina',
             self::STATUS_REVISI_PEMBINA  => 'Revisi (Pembina)',
-            self::STATUS_REVIEW_KAPRODI  => 'Review Pembina',
-            self::STATUS_REVISI_KAPRODI  => 'Revisi (Pembina)',
             self::STATUS_DISETUJUI       => 'Disetujui',
             self::STATUS_DITOLAK         => 'Ditolak',
             default                      => ucfirst($this->status),
@@ -75,8 +71,8 @@ class ProposalKegiatan extends Model
     {
         return match ($this->status) {
             self::STATUS_DIAJUKAN                                    => '#3b82f6',
-            self::STATUS_REVIEW_PEMBINA, self::STATUS_REVIEW_KAPRODI  => '#f59e0b',
-            self::STATUS_REVISI_PEMBINA, self::STATUS_REVISI_KAPRODI  => '#ef4444',
+            self::STATUS_REVIEW_PEMBINA                               => '#f59e0b',
+            self::STATUS_REVISI_PEMBINA                               => '#ef4444',
             self::STATUS_DISETUJUI                                   => '#22c55e',
             self::STATUS_DITOLAK                                     => '#6b7280',
             default                                                  => '#6b7280',
@@ -89,8 +85,7 @@ class ProposalKegiatan extends Model
     public function getStepLabelAttribute(): string
     {
         return match ($this->status) {
-            self::STATUS_DIAJUKAN, self::STATUS_REVIEW_PEMBINA, self::STATUS_REVISI_PEMBINA,
-            self::STATUS_REVIEW_KAPRODI, self::STATUS_REVISI_KAPRODI                      => 'Tahap Pembina',
+            self::STATUS_DIAJUKAN, self::STATUS_REVIEW_PEMBINA, self::STATUS_REVISI_PEMBINA => 'Tahap Pembina',
             self::STATUS_DISETUJUI                                                           => 'Selesai',
             self::STATUS_DITOLAK                                                             => 'Ditolak',
             default                                                                          => '-',
@@ -104,7 +99,6 @@ class ProposalKegiatan extends Model
     {
         return in_array($this->status, [
             self::STATUS_REVISI_PEMBINA,
-            self::STATUS_REVISI_KAPRODI,
         ]);
     }
 
@@ -116,7 +110,6 @@ class ProposalKegiatan extends Model
         return in_array($this->status, [
             self::STATUS_DIAJUKAN,
             self::STATUS_REVIEW_PEMBINA,
-            self::STATUS_REVIEW_KAPRODI,
         ]);
     }
 

@@ -19,8 +19,6 @@ return new class extends Migration
                 'diajukan',
                 'review_pembina',
                 'revisi_pembina',
-                'review_kaprodi',
-                'revisi_kaprodi',
                 'disetujui',
                 'ditolak',
             ])->default('diajukan');

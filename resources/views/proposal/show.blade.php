@@ -27,19 +27,13 @@
                     [
                         'label' => 'Review Pembina',
                         'done' =>
-                            in_array($proposal->status, [
-                                'review_pembina',
-                                'review_kaprodi',
-                                'revisi_pembina',
-                                'revisi_kaprodi',
-                                'disetujui',
-                                'ditolak',
-                            ]) || $proposal->status === 'review_pembina',
+                            in_array($proposal->status, ['review_pembina', 'revisi_pembina', 'disetujui', 'ditolak']) ||
+                            $proposal->status === 'review_pembina',
                     ],
                     ['label' => 'Disetujui', 'done' => $proposal->status === 'disetujui'],
                 ];
                 $isRejected = $proposal->status === 'ditolak';
-                $isRevision = in_array($proposal->status, ['revisi_pembina', 'revisi_kaprodi']);
+                $isRevision = in_array($proposal->status, ['revisi_pembina']);
             @endphp
             <div class="flex items-center justify-between">
                 @foreach ($steps as $i => $step)

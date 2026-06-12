@@ -153,7 +153,7 @@ class ProposalController extends Controller
     }
 
     /**
-     * Pembina / Kaprodi review action.
+     * Pembina review action.
      */
     public function review(Request $request, ProposalKegiatan $proposal)
     {

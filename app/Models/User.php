@@ -17,13 +17,11 @@ class User extends Authenticatable
        ======================================== */
 
     const ROLE_ADMINISTRATOR = 'administrator';
-    const ROLE_KAPRODI       = 'kaprodi';
     const ROLE_PEMBINA       = 'pembina';
     const ROLE_PENGURUS      = 'pengurus';
 
     const ROLES = [
         self::ROLE_ADMINISTRATOR => 'Administrator',
-        self::ROLE_KAPRODI       => 'Kaprodi',
         self::ROLE_PEMBINA       => 'Pembina',
         self::ROLE_PENGURUS      => 'Pengurus',
     ];
@@ -77,11 +75,6 @@ class User extends Authenticatable
         return $this->role === self::ROLE_ADMINISTRATOR;
     }
 
-    public function isKaprodi(): bool
-    {
-        return $this->role === self::ROLE_KAPRODI;
-    }
-
     public function isPembina(): bool
     {
         return $this->role === self::ROLE_PEMBINA;
@@ -106,7 +99,6 @@ class User extends Authenticatable
     {
         return match ($this->role) {
             self::ROLE_ADMINISTRATOR => '#ef4444',
-            self::ROLE_KAPRODI       => '#8b5cf6',
             self::ROLE_PEMBINA       => '#f59e0b',
             self::ROLE_PENGURUS      => '#3b82f6',
             default                  => '#6b7280',

@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->enum('role', ['administrator', 'kaprodi', 'pembina', 'pengurus'])->default('pengurus')->after('email');
+            $table->enum('role', ['administrator', 'pembina', 'pengurus'])->default('pengurus')->after('email');
             $table->foreignId('anggota_id')->nullable()->after('role')->constrained('anggota')->nullOnDelete();
         });
     }

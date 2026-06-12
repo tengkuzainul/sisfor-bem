@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Kepengurusan;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class KepengurusanController extends Controller
 {
@@ -16,12 +15,12 @@ class KepengurusanController extends Controller
             if ($search = $request->input('search')) {
                 $query->where(function ($q) use ($search) {
                     $q->where('nama', 'like', "%{$search}%")
-                      ->orWhere('periode', 'like', "%{$search}%")
-                      ->orWhere('deskripsi', 'like', "%{$search}%");
+                        ->orWhere('periode', 'like', "%{$search}%")
+                        ->orWhere('deskripsi', 'like', "%{$search}%");
                 });
             }
 
-            $sortBy  = $request->input('sort_by', 'tanggal_mulai');
+            $sortBy = $request->input('sort_by', 'tanggal_mulai');
             $sortDir = $request->input('sort_dir', 'desc');
             $query->orderByDesc('is_active')->orderBy($sortBy, $sortDir);
 
@@ -41,13 +40,13 @@ class KepengurusanController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nama'             => 'required|string|max:255',
-            'periode'          => 'required|string|max:20',
-            'tanggal_mulai'    => 'required|date',
-            'tanggal_selesai'  => 'required|date|after:tanggal_mulai',
-            'visi'             => 'nullable|string',
-            'misi'             => 'nullable|string',
-            'deskripsi'        => 'nullable|string',
+            'nama' => 'required|string|max:255',
+            'periode' => 'required|string|max:20',
+            'tanggal_mulai' => 'required|date',
+            'tanggal_selesai' => 'required|date|after:tanggal_mulai',
+            'visi' => 'nullable|string',
+            'misi' => 'nullable|string',
+            'deskripsi' => 'nullable|string',
         ]);
 
         Kepengurusan::create($validated);
@@ -75,13 +74,13 @@ class KepengurusanController extends Controller
     public function update(Request $request, Kepengurusan $kepengurusan)
     {
         $validated = $request->validate([
-            'nama'             => 'required|string|max:255',
-            'periode'          => 'required|string|max:20',
-            'tanggal_mulai'    => 'required|date',
-            'tanggal_selesai'  => 'required|date|after:tanggal_mulai',
-            'visi'             => 'nullable|string',
-            'misi'             => 'nullable|string',
-            'deskripsi'        => 'nullable|string',
+            'nama' => 'required|string|max:255',
+            'periode' => 'required|string|max:20',
+            'tanggal_mulai' => 'required|date',
+            'tanggal_selesai' => 'required|date|after:tanggal_mulai',
+            'visi' => 'nullable|string',
+            'misi' => 'nullable|string',
+            'deskripsi' => 'nullable|string',
         ]);
 
         $kepengurusan->update($validated);
@@ -95,6 +94,7 @@ class KepengurusanController extends Controller
     {
         if ($kepengurusan->is_active) {
             $msg = 'Kepengurusan aktif tidak dapat dihapus. Nonaktifkan terlebih dahulu.';
+
             return request()->ajax()
                 ? response()->json(['message' => $msg], 422)
                 : back()->with('error', $msg);
@@ -104,6 +104,7 @@ class KepengurusanController extends Controller
         Kepengurusan::flushCache();
 
         $msg = 'Kepengurusan berhasil dihapus.';
+
         return request()->ajax()
             ? response()->json(['message' => $msg])
             : redirect()->route('kepengurusan.index')->with('success', $msg);
@@ -117,6 +118,7 @@ class KepengurusanController extends Controller
         $kepengurusan->activate();
 
         $msg = "Kepengurusan \"{$kepengurusan->nama}\" berhasil diaktifkan.";
+
         return request()->ajax()
             ? response()->json(['message' => $msg])
             : back()->with('success', $msg);
@@ -130,6 +132,7 @@ class KepengurusanController extends Controller
         $kepengurusan->deactivate();
 
         $msg = "Kepengurusan \"{$kepengurusan->nama}\" berhasil dinonaktifkan.";
+
         return request()->ajax()
             ? response()->json(['message' => $msg])
             : back()->with('success', $msg);

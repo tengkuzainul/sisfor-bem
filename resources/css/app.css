@@ -387,14 +387,21 @@
    Print Styles
    ======================================== */
 @media print {
-    aside, header, footer, .no-print {
+
+    aside,
+    header,
+    footer,
+    .no-print {
         display: none !important;
     }
+
     main {
         padding: 0 !important;
         margin: 0 !important;
     }
-    .lg\:pl-64, .lg\:pl-\[17\.5rem\] {
+
+    .lg\:pl-64,
+    .lg\:pl-\[17\.5rem\] {
         padding-left: 0 !important;
     }
 }

@@ -25,7 +25,7 @@
         <div class="flex items-center gap-2">
             {{-- Status Change Dropdown --}}
             <div x-data="{ open: false }" class="relative">
-                <button @click="open = !open" class="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
+                <button @click.stop="open = !open" class="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
                     <x-heroicon-o-arrow-path class="h-4 w-4" />
                     Ubah Status
                 </button>

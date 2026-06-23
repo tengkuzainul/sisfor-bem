@@ -194,7 +194,7 @@
     {{-- User Profile Footer --}}
     <div class="border-t border-gray-200/40 p-3 dark:border-white/[0.08]">
         <div x-data="{ open: false }" class="relative">
-            <button @click="open = !open"
+            <button @click.stop="open = !open"
                 class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 transition-colors hover:bg-gray-50 dark:hover:bg-white/[0.06]">
                 <div class="flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold text-white shadow-sm"
                     style="background: linear-gradient(135deg, {{ $user->role_color }}cc, {{ $user->role_color }})">

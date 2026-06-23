@@ -283,38 +283,38 @@
             <div class="glass-card p-6">
                 <h3 class="text-base font-semibold text-gray-900 dark:text-white">Aksi Cepat</h3>
                 <div class="mt-4 grid grid-cols-2 gap-2">
-                    <button
+                    <a href="{{ route('anggota.create') }}"
                         class="flex flex-col items-center gap-2 rounded-xl border border-primary-100 bg-primary-50/30 px-3 py-4 text-center transition hover:border-primary-200 hover:bg-primary-100/50 hover:shadow-sm dark:border-gray-700 dark:bg-gray-800/50 dark:hover:border-primary-800 dark:hover:bg-primary-950/30">
                         <div
                             class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-100 dark:bg-primary-900/50">
                             <x-heroicon-o-user-plus class="h-5 w-5 text-primary-600 dark:text-primary-400" />
                         </div>
                         <span class="text-xs font-medium text-gray-700 dark:text-gray-300">Tambah Anggota</span>
-                    </button>
-                    <button
+                    </a>
+                    <a href="{{ route('program-kerja.create') }}"
                         class="flex flex-col items-center gap-2 rounded-xl border border-success-100 bg-success-50/30 px-3 py-4 text-center transition hover:border-success-200 hover:bg-success-100/50 hover:shadow-sm dark:border-gray-700 dark:bg-gray-800/50 dark:hover:border-success-800 dark:hover:bg-success-950/30">
                         <div
                             class="flex h-10 w-10 items-center justify-center rounded-lg bg-success-100 dark:bg-success-900/50">
                             <x-heroicon-o-calendar-days class="h-5 w-5 text-success-600 dark:text-success-400" />
                         </div>
                         <span class="text-xs font-medium text-gray-700 dark:text-gray-300">Buat Kegiatan</span>
-                    </button>
-                    <button
+                    </a>
+                    <a href="#" onclick="Toast.fire({icon: 'info', title: 'Fitur pencatatan keuangan belum tersedia.'})"
                         class="flex flex-col items-center gap-2 rounded-xl border border-accent-100 bg-accent-50/30 px-3 py-4 text-center transition hover:border-accent-200 hover:bg-accent-100/50 hover:shadow-sm dark:border-gray-700 dark:bg-gray-800/50 dark:hover:border-accent-800 dark:hover:bg-accent-950/30">
                         <div
                             class="flex h-10 w-10 items-center justify-center rounded-lg bg-accent-100 dark:bg-accent-900/50">
                             <x-heroicon-o-banknotes class="h-5 w-5 text-accent-600 dark:text-accent-400" />
                         </div>
                         <span class="text-xs font-medium text-gray-700 dark:text-gray-300">Catat Keuangan</span>
-                    </button>
-                    <button
+                    </a>
+                    <a href="{{ route('proposal.create') }}"
                         class="flex flex-col items-center gap-2 rounded-xl border border-warning-100 bg-warning-50/30 px-3 py-4 text-center transition hover:border-warning-200 hover:bg-warning-100/50 hover:shadow-sm dark:border-gray-700 dark:bg-gray-800/50 dark:hover:border-warning-800 dark:hover:bg-warning-950/30">
                         <div
                             class="flex h-10 w-10 items-center justify-center rounded-lg bg-warning-100 dark:bg-warning-900/50">
                             <x-heroicon-o-document-text class="h-5 w-5 text-warning-600 dark:text-warning-400" />
                         </div>
                         <span class="text-xs font-medium text-gray-700 dark:text-gray-300">Buat Surat</span>
-                    </button>
+                    </a>
                 </div>
             </div>
 
@@ -449,7 +449,7 @@
                         placeholder: 'Cari departemen...',
                         noRows: 'Tidak ada data',
                         info: 'Menampilkan {start} - {end} dari {rows} data',
-                        perPage: '{select} data per halaman',
+                        perPage: 'data per halaman',
                     },
                 });
             });

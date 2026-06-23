@@ -45,6 +45,7 @@ window.dataTable = function (config = {}) {
         error: false,
         url: config.url || '',
         statusFilter: config.statusFilter || '',
+        filters: config.filters || {},
         _controller: null,
 
         // Lifecycle
@@ -67,6 +68,7 @@ window.dataTable = function (config = {}) {
                         sort_by: this.sortBy,
                         sort_dir: this.sortDir,
                         status: this.statusFilter || undefined,
+                        ...this.filters,
                     },
                     signal: this._controller.signal,
                 });

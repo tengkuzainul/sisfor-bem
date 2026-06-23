@@ -145,12 +145,67 @@
 /* ========================================
    Simple-DataTables - Tailwind CSS Override
    ======================================== */
-.dataTable-wrapper .dataTable-container {
+.datatable-wrapper .datatable-container {
     border-radius: 0.5rem;
-    overflow: hidden;
+    overflow-x: auto;
 }
 
-.dataTable-wrapper .dataTable-table th {
+.datatable-wrapper .datatable-top {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem 0;
+}
+
+@media (min-width: 640px) {
+    .datatable-wrapper .datatable-top {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+.datatable-wrapper .datatable-search {
+    width: 100%;
+}
+
+@media (min-width: 640px) {
+    .datatable-wrapper .datatable-search {
+        width: auto;
+    }
+}
+
+.datatable-wrapper .datatable-search .datatable-input {
+    width: 100%;
+}
+
+@media (min-width: 640px) {
+    .datatable-wrapper .datatable-search .datatable-input {
+        width: auto;
+    }
+}
+
+.datatable-wrapper .datatable-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 0;
+}
+
+@media (min-width: 640px) {
+    .datatable-wrapper .datatable-bottom {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
+
+.datatable-wrapper .datatable-table {
+    min-width: 640px;
+    width: 100%;
+}
+
+.datatable-wrapper .datatable-table th {
     background-color: var(--color-gray-50);
     font-weight: 600;
     font-size: 0.75rem;
@@ -160,38 +215,38 @@
     padding: 0.75rem 1rem;
 }
 
-.dataTable-wrapper .dataTable-table td {
+.datatable-wrapper .datatable-table td {
     padding: 0.75rem 1rem;
     font-size: 0.875rem;
     color: var(--color-gray-700);
     border-bottom: 1px solid var(--color-gray-200);
 }
 
-.dataTable-wrapper .dataTable-table tr:hover td {
+.datatable-wrapper .datatable-table tr:hover td {
     background-color: var(--color-gray-50);
 }
 
-.dataTable-wrapper .dataTable-pagination a {
+.datatable-wrapper .datatable-pagination a {
     border-radius: 0.375rem;
     padding: 0.375rem 0.75rem;
     font-size: 0.875rem;
 }
 
-.dataTable-wrapper .dataTable-pagination a.active {
+.datatable-wrapper .datatable-pagination a.active {
     background-color: var(--color-primary-600);
     color: white;
 }
 
-.dataTable-wrapper .dataTable-input,
-.dataTable-wrapper .dataTable-selector {
+.datatable-wrapper .datatable-input,
+.datatable-wrapper .datatable-selector {
     border: 1px solid var(--color-gray-300);
     border-radius: 0.375rem;
     padding: 0.5rem 0.75rem;
     font-size: 0.875rem;
 }
 
-.dataTable-wrapper .dataTable-input:focus,
-.dataTable-wrapper .dataTable-selector:focus {
+.datatable-wrapper .datatable-input:focus,
+.datatable-wrapper .datatable-selector:focus {
     outline: none;
     border-color: var(--color-primary-500);
     box-shadow: 0 0 0 3px oklch(0.623 0.214 259.815 / 0.15);
@@ -344,42 +399,42 @@
 /* ========================================
    DataTable Dark Mode Override
    ======================================== */
-.dark .dataTable-wrapper .dataTable-table th {
+.dark .datatable-wrapper .datatable-table th {
     background-color: var(--color-gray-800);
     color: var(--color-gray-400);
     border-bottom: 1px solid var(--color-gray-700);
 }
 
-.dark .dataTable-wrapper .dataTable-table td {
+.dark .datatable-wrapper .datatable-table td {
     color: var(--color-gray-300);
     border-bottom: 1px solid var(--color-gray-800);
 }
 
-.dark .dataTable-wrapper .dataTable-table tr:hover td {
+.dark .datatable-wrapper .datatable-table tr:hover td {
     background-color: var(--color-gray-800);
 }
 
-.dark .dataTable-wrapper .dataTable-input,
-.dark .dataTable-wrapper .dataTable-selector {
+.dark .datatable-wrapper .datatable-input,
+.dark .datatable-wrapper .datatable-selector {
     background-color: var(--color-gray-800);
     border-color: var(--color-gray-700);
     color: var(--color-gray-200);
 }
 
-.dark .dataTable-wrapper .dataTable-pagination a {
+.dark .datatable-wrapper .datatable-pagination a {
     color: var(--color-gray-400);
 }
 
-.dark .dataTable-wrapper .dataTable-pagination a.active {
+.dark .datatable-wrapper .datatable-pagination a.active {
     background-color: var(--color-primary-600);
     color: white;
 }
 
-.dark .dataTable-wrapper .dataTable-pagination a:hover {
+.dark .datatable-wrapper .datatable-pagination a:hover {
     background-color: var(--color-gray-800);
 }
 
-.dark .dataTable-wrapper .dataTable-info {
+.dark .datatable-wrapper .datatable-info {
     color: var(--color-gray-400);
 }
 

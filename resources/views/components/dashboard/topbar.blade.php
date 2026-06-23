@@ -5,7 +5,7 @@
     {{-- Left: Hamburger + Breadcrumb --}}
     <div class="flex items-center gap-3">
         {{-- Mobile menu toggle --}}
-        <button @click="sidebarOpen = !sidebarOpen"
+        <button @click.stop="sidebarOpen = !sidebarOpen"
                 class="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 lg:hidden dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-200">
             <x-heroicon-o-bars-3 class="h-5 w-5" />
         </button>
@@ -27,7 +27,7 @@
 
         {{-- Search Toggle --}}
         <div x-data="{ searchOpen: false }" class="relative">
-            <button @click="searchOpen = !searchOpen"
+            <button @click.stop="searchOpen = !searchOpen"
                     class="rounded-lg p-2 text-gray-500 transition hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-200">
                 <x-heroicon-o-magnifying-glass class="h-5 w-5" />
             </button>
@@ -70,7 +70,7 @@
 
         {{-- Notifications --}}
         <div x-data="{ open: false }" class="relative">
-            <button @click="open = !open"
+            <button @click.stop="open = !open"
                     class="relative rounded-lg p-2 text-gray-500 transition hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-200">
                 <x-heroicon-o-bell class="h-5 w-5" />
                 {{-- Notification dot --}}
@@ -144,7 +144,7 @@
 
         {{-- User Avatar (mobile) --}}
         <div x-data="{ open: false }" class="relative lg:hidden">
-            <button @click="open = !open"
+            <button @click.stop="open = !open"
                     class="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary-400 to-primary-600 text-xs font-bold text-white shadow-sm">
                 {{ substr(auth()->user()->name ?? 'A', 0, 1) }}
             </button>
@@ -157,7 +157,7 @@
                     <x-heroicon-o-user-circle class="h-4 w-4" /> Profil
                 </a>
                 <hr class="my-1 border-gray-100 dark:border-gray-700">
-                <form method="POST" action="#">
+                <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="flex w-full items-center gap-2 px-4 py-2 text-sm text-danger-600 hover:bg-danger-50 dark:text-danger-400 dark:hover:bg-danger-950/30">
                         <x-heroicon-o-arrow-right-on-rectangle class="h-4 w-4" /> Keluar

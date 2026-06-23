@@ -91,7 +91,11 @@
             <a href="#anggota" @click="mobileMenu = false" class="block rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-900">Anggota</a>
             <a href="#program-kerja" @click="mobileMenu = false" class="block rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-900">Program Kerja</a>
             <a href="#rekrutmen" @click="mobileMenu = false" class="block rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-900">Rekrutmen</a>
-            <a href="{{ route('dashboard') }}" class="mt-2 block rounded-lg bg-primary-600 px-3 py-2 text-center text-sm font-medium text-white">Dashboard</a>
+            @auth
+                <a href="{{ route('dashboard') }}" class="mt-2 block rounded-lg bg-primary-600 px-3 py-2 text-center text-sm font-medium text-white">Dashboard</a>
+            @else
+                <a href="{{ route('login') }}" class="mt-2 block rounded-lg bg-primary-600 px-3 py-2 text-center text-sm font-medium text-white">Login</a>
+            @endauth
         </div>
     </nav>
 
@@ -581,7 +585,7 @@
             <div class="text-center">
                 <span class="text-xs font-semibold uppercase tracking-widest text-primary-600 dark:text-primary-400">Open Recruitment</span>
                 <h2 class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white">Bergabung Bersama Kami</h2>
-                <p class="mx-auto mt-3 max-w-2xl text-gray-500 dark:text-gray-400">Tertarik berkontribusi di {{ config('app.names') }}? Daftarkan dirimu sekarang dan jadilah bagian dari perubahan.</p>
+                <p class="mx-auto mt-3 max-w-2xl text-gray-500 dark:text-gray-400">Tertarik berkontribusi di {{ config('app.name') }}? Daftarkan dirimu sekarang dan jadilah bagian dari perubahan.</p>
             </div>
 
             @if($openRecruitments->count() > 0)

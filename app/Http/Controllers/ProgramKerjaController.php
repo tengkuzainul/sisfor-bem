@@ -8,7 +8,6 @@ use App\Models\KategoriProker;
 use App\Models\Kepengurusan;
 use App\Models\ProgramKerja;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class ProgramKerjaController extends Controller
@@ -25,8 +24,8 @@ class ProgramKerjaController extends Controller
             if ($search = $request->input('search')) {
                 $query->where(function ($q) use ($search) {
                     $q->where('nama', 'like', "%{$search}%")
-                      ->orWhere('lokasi', 'like', "%{$search}%")
-                      ->orWhereHas('kategori', fn ($q2) => $q2->where('nama', 'like', "%{$search}%"));
+                        ->orWhere('lokasi', 'like', "%{$search}%")
+                        ->orWhereHas('kategori', fn ($q2) => $q2->where('nama', 'like', "%{$search}%"));
                 });
             }
 
@@ -38,7 +37,7 @@ class ProgramKerjaController extends Controller
                 $query->where('kategori_proker_id', $kategori);
             }
 
-            $sortBy  = $request->input('sort_by', 'tanggal_mulai');
+            $sortBy = $request->input('sort_by', 'tanggal_mulai');
             $sortDir = $request->input('sort_dir', 'desc');
             $query->orderBy($sortBy, $sortDir);
 
@@ -46,6 +45,7 @@ class ProgramKerjaController extends Controller
 
             $paginated->getCollection()->transform(function ($proker) {
                 $proker->append(['status_label', 'status_color']);
+
                 return $proker;
             });
 
@@ -71,17 +71,17 @@ class ProgramKerjaController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nama'               => 'required|string|max:255',
-            'kepengurusan_id'    => 'required|exists:kepengurusan,id',
+            'nama' => 'required|string|max:255',
+            'kepengurusan_id' => 'required|exists:kepengurusan,id',
             'kategori_proker_id' => 'nullable|exists:kategori_proker,id',
-            'departemen_id'      => 'nullable|exists:departemen,id',
-            'deskripsi'          => 'nullable|string',
-            'lokasi'             => 'nullable|string|max:255',
-            'tanggal_mulai'      => 'nullable|date',
-            'tanggal_selesai'    => 'nullable|date|after_or_equal:tanggal_mulai',
-            'status'             => 'required|in:coming_soon,berlangsung,pending,selesai',
-            'catatan'            => 'nullable|string',
-            'dokumentasi.*'      => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'departemen_id' => 'nullable|exists:departemen,id',
+            'deskripsi' => 'nullable|string',
+            'lokasi' => 'nullable|string|max:255',
+            'tanggal_mulai' => 'nullable|date',
+            'tanggal_selesai' => 'nullable|date|after_or_equal:tanggal_mulai',
+            'status' => 'required|in:coming_soon,berlangsung,pending,selesai',
+            'catatan' => 'nullable|string',
+            'dokumentasi.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
         ]);
 
         $proker = ProgramKerja::create($request->only([
@@ -95,8 +95,8 @@ class ProgramKerjaController extends Controller
                 $path = $file->store('proker/dokumentasi', 'public');
                 DokumentasiProker::create([
                     'program_kerja_id' => $proker->id,
-                    'file_path'        => $path,
-                    'tipe'             => 'image',
+                    'file_path' => $path,
+                    'tipe' => 'image',
                 ]);
             }
         }
@@ -128,17 +128,17 @@ class ProgramKerjaController extends Controller
     public function update(Request $request, ProgramKerja $programKerja)
     {
         $validated = $request->validate([
-            'nama'               => 'required|string|max:255',
-            'kepengurusan_id'    => 'required|exists:kepengurusan,id',
+            'nama' => 'required|string|max:255',
+            'kepengurusan_id' => 'required|exists:kepengurusan,id',
             'kategori_proker_id' => 'nullable|exists:kategori_proker,id',
-            'departemen_id'      => 'nullable|exists:departemen,id',
-            'deskripsi'          => 'nullable|string',
-            'lokasi'             => 'nullable|string|max:255',
-            'tanggal_mulai'      => 'nullable|date',
-            'tanggal_selesai'    => 'nullable|date|after_or_equal:tanggal_mulai',
-            'status'             => 'required|in:coming_soon,berlangsung,pending,selesai',
-            'catatan'            => 'nullable|string',
-            'dokumentasi.*'      => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'departemen_id' => 'nullable|exists:departemen,id',
+            'deskripsi' => 'nullable|string',
+            'lokasi' => 'nullable|string|max:255',
+            'tanggal_mulai' => 'nullable|date',
+            'tanggal_selesai' => 'nullable|date|after_or_equal:tanggal_mulai',
+            'status' => 'required|in:coming_soon,berlangsung,pending,selesai',
+            'catatan' => 'nullable|string',
+            'dokumentasi.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
         ]);
 
         $programKerja->update($request->only([
@@ -163,8 +163,8 @@ class ProgramKerjaController extends Controller
                 $path = $file->store('proker/dokumentasi', 'public');
                 DokumentasiProker::create([
                     'program_kerja_id' => $programKerja->id,
-                    'file_path'        => $path,
-                    'tipe'             => 'image',
+                    'file_path' => $path,
+                    'tipe' => 'image',
                 ]);
             }
         }
@@ -183,6 +183,7 @@ class ProgramKerjaController extends Controller
         $programKerja->delete();
 
         $msg = 'Program kerja berhasil dihapus.';
+
         return request()->ajax()
             ? response()->json(['message' => $msg])
             : redirect()->route('program-kerja.index')->with('success', $msg);
@@ -194,7 +195,7 @@ class ProgramKerjaController extends Controller
     public function calendarEvents(Request $request)
     {
         $activeKepengurusan = Kepengurusan::getActive();
-        if (!$activeKepengurusan) {
+        if (! $activeKepengurusan) {
             return response()->json([]);
         }
 
@@ -203,17 +204,17 @@ class ProgramKerjaController extends Controller
             ->get()
             ->map(function ($proker) {
                 return [
-                    'id'         => $proker->id,
-                    'title'      => $proker->nama,
-                    'start'      => $proker->tanggal_mulai?->format('Y-m-d'),
-                    'end'        => $proker->tanggal_selesai?->format('Y-m-d') ?? $proker->tanggal_mulai?->format('Y-m-d'), // inclusive end
-                    'color'      => $proker->kategori?->warna ?? '#6b7280',
-                    'status'     => $proker->status,
+                    'id' => $proker->id,
+                    'title' => $proker->nama,
+                    'start' => $proker->tanggal_mulai?->format('Y-m-d'),
+                    'end' => $proker->tanggal_selesai?->format('Y-m-d') ?? $proker->tanggal_mulai?->format('Y-m-d'), // inclusive end
+                    'color' => $proker->kategori?->warna ?? '#6b7280',
+                    'status' => $proker->status,
                     'statusLabel' => $proker->status_label,
-                    'kategori'   => $proker->kategori?->nama ?? '-',
+                    'kategori' => $proker->kategori?->nama ?? '-',
                     'departemen' => $proker->departemen?->singkatan ?? $proker->departemen?->nama ?? 'BPH',
-                    'lokasi'     => $proker->lokasi,
-                    'url'        => route('home.proker.detail', $proker->id),
+                    'lokasi' => $proker->lokasi,
+                    'url' => route('home.proker.detail', $proker->id),
                 ];
             });
 

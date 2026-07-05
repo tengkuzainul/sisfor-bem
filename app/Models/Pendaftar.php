@@ -13,20 +13,25 @@ class Pendaftar extends Model
 
     protected $table = 'pendaftar';
 
-    const STATUS_MENDAFTAR  = 'mendaftar';
-    const STATUS_REVIEW     = 'review';
-    const STATUS_WAWANCARA  = 'wawancara';
-    const STATUS_DITERIMA   = 'diterima';
-    const STATUS_DITOLAK    = 'ditolak';
-    const STATUS_CADANGAN   = 'cadangan';
+    const STATUS_MENDAFTAR = 'mendaftar';
+
+    const STATUS_REVIEW = 'review';
+
+    const STATUS_WAWANCARA = 'wawancara';
+
+    const STATUS_DITERIMA = 'diterima';
+
+    const STATUS_DITOLAK = 'ditolak';
+
+    const STATUS_CADANGAN = 'cadangan';
 
     const STATUSES = [
-        self::STATUS_MENDAFTAR  => 'Mendaftar',
-        self::STATUS_REVIEW     => 'Dalam Review',
-        self::STATUS_WAWANCARA  => 'Wawancara',
-        self::STATUS_DITERIMA   => 'Diterima',
-        self::STATUS_DITOLAK    => 'Ditolak',
-        self::STATUS_CADANGAN   => 'Cadangan',
+        self::STATUS_MENDAFTAR => 'Mendaftar',
+        self::STATUS_REVIEW => 'Dalam Review',
+        self::STATUS_WAWANCARA => 'Wawancara',
+        self::STATUS_DITERIMA => 'Diterima',
+        self::STATUS_DITOLAK => 'Ditolak',
+        self::STATUS_CADANGAN => 'Cadangan',
     ];
 
     protected $fillable = [
@@ -74,7 +79,7 @@ class Pendaftar extends Model
 
         static::creating(function ($pendaftar) {
             if (empty($pendaftar->kode_pendaftaran)) {
-                $pendaftar->kode_pendaftaran = 'REG-' . strtoupper(substr(uniqid(), -6));
+                $pendaftar->kode_pendaftaran = 'REG-'.strtoupper(substr(uniqid(), -6));
             }
         });
     }
@@ -115,13 +120,13 @@ class Pendaftar extends Model
     public function getStatusColorAttribute(): string
     {
         return match ($this->status) {
-            self::STATUS_MENDAFTAR  => '#6b7280',
-            self::STATUS_REVIEW     => '#8b5cf6',
-            self::STATUS_WAWANCARA  => '#f59e0b',
-            self::STATUS_DITERIMA   => '#10b981',
-            self::STATUS_DITOLAK    => '#ef4444',
-            self::STATUS_CADANGAN   => '#3b82f6',
-            default                 => '#6b7280',
+            self::STATUS_MENDAFTAR => '#6b7280',
+            self::STATUS_REVIEW => '#8b5cf6',
+            self::STATUS_WAWANCARA => '#f59e0b',
+            self::STATUS_DITERIMA => '#10b981',
+            self::STATUS_DITOLAK => '#ef4444',
+            self::STATUS_CADANGAN => '#3b82f6',
+            default => '#6b7280',
         };
     }
 
@@ -137,10 +142,11 @@ class Pendaftar extends Model
     public function getRekomendasi(): array
     {
         $reviews = $this->reviews()->where('tipe', 'rekomendasi')->get();
+
         return [
-            'direkomendasikan'       => $reviews->where('rekomendasi_status', 'direkomendasikan')->count(),
+            'direkomendasikan' => $reviews->where('rekomendasi_status', 'direkomendasikan')->count(),
             'tidak_direkomendasikan' => $reviews->where('rekomendasi_status', 'tidak_direkomendasikan')->count(),
-            'netral'                 => $reviews->where('rekomendasi_status', 'netral')->count(),
+            'netral' => $reviews->where('rekomendasi_status', 'netral')->count(),
         ];
     }
 }

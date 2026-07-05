@@ -196,7 +196,7 @@
         <div x-data="{ open: false }" class="relative">
             <button @click.stop="open = !open"
                 class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 transition-colors hover:bg-gray-50 dark:hover:bg-white/[0.06]">
-                <div class="flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold text-white shadow-sm"
+                <div class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full text-xs font-bold text-white shadow-sm"
                     style="background: linear-gradient(135deg, {{ $user->role_color }}cc, {{ $user->role_color }})">
                     {{ substr($user->name ?? 'A', 0, 1) }}
                 </div>
@@ -216,7 +216,7 @@
                 x-transition:leave-start="transform opacity-100 scale-100"
                 x-transition:leave-end="transform opacity-0 scale-95" @click.outside="open = false"
                 class="absolute bottom-full left-0 mb-2 w-full rounded-lg border border-gray-200 bg-white py-1 shadow-xl dark:border-gray-700 dark:bg-gray-800">
-                <a href="#"
+                <a href="{{ route('profile.show') }}"
                     class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700">
                     <x-heroicon-o-user-circle class="h-4 w-4" /> Profil Saya
                 </a>

@@ -10,6 +10,7 @@ use App\Http\Controllers\KategoriProkerController;
 use App\Http\Controllers\KepengurusanController;
 use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\PendaftarController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramKerjaController;
 use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\RekrutmenController;
@@ -24,6 +25,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/proker/{programKerja}', [HomeController::class, 'prokerDetail'])->name('home.proker.detail');
+Route::get('/verify-anggota/{nim}', [ProfileController::class, 'verify'])->name('profile.verify');
 Route::get('/api/calendar-events', [ProgramKerjaController::class, 'calendarEvents'])->name('api.calendar-events');
 
 /*
@@ -53,6 +55,11 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 Route::middleware('auth')->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Profil Saya & Cetak Kartu
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::post('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
+    Route::get('/profile/print', [ProfileController::class, 'print'])->name('profile.print');
 
     /*
     |----------------------------------------------------------------------

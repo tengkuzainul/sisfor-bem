@@ -21,11 +21,11 @@ class DepartemenController extends Controller
             if ($search = $request->input('search')) {
                 $query->where(function ($q) use ($search) {
                     $q->where('nama', 'like', "%{$search}%")
-                      ->orWhere('singkatan', 'like', "%{$search}%");
+                        ->orWhere('singkatan', 'like', "%{$search}%");
                 });
             }
 
-            $sortBy  = $request->input('sort_by', 'nama');
+            $sortBy = $request->input('sort_by', 'nama');
             $sortDir = $request->input('sort_dir', 'asc');
             $query->orderBy($sortBy, $sortDir);
 
@@ -42,6 +42,7 @@ class DepartemenController extends Controller
         $kepengurusanList = Cache::remember('kepengurusan_list', 3600, function () {
             return Kepengurusan::orderByDesc('tanggal_mulai')->get();
         });
+
         return view('departemen.create', compact('kepengurusanList'));
     }
 
@@ -49,14 +50,14 @@ class DepartemenController extends Controller
     {
         $validated = $request->validate([
             'kepengurusan_id' => 'required|exists:kepengurusan,id',
-            'nama'            => 'required|string|max:255',
-            'singkatan'       => 'nullable|string|max:20',
-            'deskripsi'       => 'nullable|string',
+            'nama' => 'required|string|max:255',
+            'singkatan' => 'nullable|string|max:20',
+            'deskripsi' => 'nullable|string',
         ]);
 
         Departemen::create($validated);
         Kepengurusan::flushCache();
-        Cache::forget('departemen_index_' . $validated['kepengurusan_id']);
+        Cache::forget('departemen_index_'.$validated['kepengurusan_id']);
 
         return redirect()->route('departemen.index')
             ->with('success', 'Departemen berhasil ditambahkan.');
@@ -67,6 +68,7 @@ class DepartemenController extends Controller
         $kepengurusanList = Cache::remember('kepengurusan_list', 3600, function () {
             return Kepengurusan::orderByDesc('tanggal_mulai')->get();
         });
+
         return view('departemen.edit', compact('departemen', 'kepengurusanList'));
     }
 
@@ -74,14 +76,14 @@ class DepartemenController extends Controller
     {
         $validated = $request->validate([
             'kepengurusan_id' => 'required|exists:kepengurusan,id',
-            'nama'            => 'required|string|max:255',
-            'singkatan'       => 'nullable|string|max:20',
-            'deskripsi'       => 'nullable|string',
+            'nama' => 'required|string|max:255',
+            'singkatan' => 'nullable|string|max:20',
+            'deskripsi' => 'nullable|string',
         ]);
 
         $departemen->update($validated);
         Kepengurusan::flushCache();
-        Cache::forget('departemen_index_' . $departemen->kepengurusan_id);
+        Cache::forget('departemen_index_'.$departemen->kepengurusan_id);
 
         return redirect()->route('departemen.index')
             ->with('success', 'Departemen berhasil diperbarui.');
@@ -91,6 +93,7 @@ class DepartemenController extends Controller
     {
         if ($departemen->keanggotaan()->exists()) {
             $msg = 'Departemen memiliki anggota, tidak bisa dihapus.';
+
             return request()->ajax()
                 ? response()->json(['message' => $msg], 422)
                 : back()->with('error', $msg);
@@ -98,9 +101,10 @@ class DepartemenController extends Controller
 
         $departemen->delete();
         Kepengurusan::flushCache();
-        Cache::forget('departemen_index_' . $departemen->kepengurusan_id);
+        Cache::forget('departemen_index_'.$departemen->kepengurusan_id);
 
         $msg = 'Departemen berhasil dihapus.';
+
         return request()->ajax()
             ? response()->json(['message' => $msg])
             : redirect()->route('departemen.index')->with('success', $msg);

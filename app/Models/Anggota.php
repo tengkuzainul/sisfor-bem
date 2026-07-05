@@ -47,8 +47,9 @@ class Anggota extends Model
     public function getInisialAttribute(): string
     {
         $words = explode(' ', $this->nama);
+
         return strtoupper(
-            substr($words[0], 0, 1) . (isset($words[1]) ? substr($words[1], 0, 1) : '')
+            substr($words[0], 0, 1).(isset($words[1]) ? substr($words[1], 0, 1) : '')
         );
     }
 

@@ -28,13 +28,13 @@ class AnggotaController extends Controller
             if ($search = $request->input('search')) {
                 $query->where(function ($q) use ($search) {
                     $q->where('nama', 'like', "%{$search}%")
-                      ->orWhere('nim', 'like', "%{$search}%")
-                      ->orWhere('email', 'like', "%{$search}%")
-                      ->orWhere('prodi', 'like', "%{$search}%");
+                        ->orWhere('nim', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%")
+                        ->orWhere('prodi', 'like', "%{$search}%");
                 });
             }
 
-            $sortBy  = $request->input('sort_by', 'nama');
+            $sortBy = $request->input('sort_by', 'nama');
             $sortDir = $request->input('sort_dir', 'asc');
             $query->orderBy($sortBy, $sortDir);
 
@@ -44,6 +44,7 @@ class AnggotaController extends Controller
             $paginated->getCollection()->transform(function ($anggota) {
                 $anggota->append(['inisial', 'active_keanggotaan']);
                 $anggota->makeHidden('keanggotaan');
+
                 return $anggota;
             });
 
@@ -56,8 +57,8 @@ class AnggotaController extends Controller
     public function create()
     {
         $activeKepengurusan = Kepengurusan::getActive();
-        $departemenList     = $activeKepengurusan
-            ? Cache::remember('departemen_list_' . $activeKepengurusan->id, 3600, function () use ($activeKepengurusan) {
+        $departemenList = $activeKepengurusan
+            ? Cache::remember('departemen_list_'.$activeKepengurusan->id, 3600, function () use ($activeKepengurusan) {
                 return Departemen::where('kepengurusan_id', $activeKepengurusan->id)->orderBy('nama')->get();
             })
             : collect();
@@ -71,18 +72,18 @@ class AnggotaController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nama'              => 'required|string|max:255',
-            'nim'               => 'required|string|max:20|unique:anggota,nim',
-            'email'             => 'nullable|email|max:255',
-            'no_hp'             => 'nullable|string|max:20',
-            'jenis_kelamin'     => 'nullable|in:L,P',
-            'angkatan'          => 'nullable|string|max:4',
-            'prodi'             => 'nullable|string|max:255',
-            'alamat'            => 'nullable|string',
-            'foto'              => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'departemen_id'     => 'nullable|exists:departemen,id',
-            'jabatan_id'        => 'required|exists:jabatan,id',
-            'kepengurusan_id'   => 'required|exists:kepengurusan,id',
+            'nama' => 'required|string|max:255',
+            'nim' => 'required|string|max:20|unique:anggota,nim',
+            'email' => 'nullable|email|max:255',
+            'no_hp' => 'nullable|string|max:20',
+            'jenis_kelamin' => 'nullable|in:L,P',
+            'angkatan' => 'nullable|string|max:4',
+            'prodi' => 'nullable|string|max:255',
+            'alamat' => 'nullable|string',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'departemen_id' => 'nullable|exists:departemen,id',
+            'jabatan_id' => 'required|exists:jabatan,id',
+            'kepengurusan_id' => 'required|exists:kepengurusan,id',
         ]);
 
         $anggotaData = $request->only([
@@ -97,11 +98,11 @@ class AnggotaController extends Controller
 
         // Buat keanggotaan di kepengurusan aktif
         Keanggotaan::create([
-            'kepengurusan_id'   => $validated['kepengurusan_id'],
-            'anggota_id'        => $anggota->id,
-            'departemen_id'     => $validated['departemen_id'] ?? null,
-            'jabatan_id'        => $validated['jabatan_id'],
-            'status'            => 'aktif',
+            'kepengurusan_id' => $validated['kepengurusan_id'],
+            'anggota_id' => $anggota->id,
+            'departemen_id' => $validated['departemen_id'] ?? null,
+            'jabatan_id' => $validated['jabatan_id'],
+            'status' => 'aktif',
             'tanggal_bergabung' => now(),
         ]);
 
@@ -114,8 +115,8 @@ class AnggotaController extends Controller
     public function edit(Anggota $anggota)
     {
         $activeKepengurusan = Kepengurusan::getActive();
-        $departemenList     = $activeKepengurusan
-            ? Cache::remember('departemen_list_' . $activeKepengurusan->id, 3600, function () use ($activeKepengurusan) {
+        $departemenList = $activeKepengurusan
+            ? Cache::remember('departemen_list_'.$activeKepengurusan->id, 3600, function () use ($activeKepengurusan) {
                 return Departemen::where('kepengurusan_id', $activeKepengurusan->id)->orderBy('nama')->get();
             })
             : collect();
@@ -134,18 +135,18 @@ class AnggotaController extends Controller
     public function update(Request $request, Anggota $anggota)
     {
         $validated = $request->validate([
-            'nama'              => 'required|string|max:255',
-            'nim'               => 'required|string|max:20|unique:anggota,nim,' . $anggota->id,
-            'email'             => 'nullable|email|max:255',
-            'no_hp'             => 'nullable|string|max:20',
-            'jenis_kelamin'     => 'nullable|in:L,P',
-            'angkatan'          => 'nullable|string|max:4',
-            'prodi'             => 'nullable|string|max:255',
-            'alamat'            => 'nullable|string',
-            'foto'              => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'departemen_id'     => 'nullable|exists:departemen,id',
-            'jabatan_id'        => 'required|exists:jabatan,id',
-            'kepengurusan_id'   => 'required|exists:kepengurusan,id',
+            'nama' => 'required|string|max:255',
+            'nim' => 'required|string|max:20|unique:anggota,nim,'.$anggota->id,
+            'email' => 'nullable|email|max:255',
+            'no_hp' => 'nullable|string|max:20',
+            'jenis_kelamin' => 'nullable|in:L,P',
+            'angkatan' => 'nullable|string|max:4',
+            'prodi' => 'nullable|string|max:255',
+            'alamat' => 'nullable|string',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'departemen_id' => 'nullable|exists:departemen,id',
+            'jabatan_id' => 'required|exists:jabatan,id',
+            'kepengurusan_id' => 'required|exists:kepengurusan,id',
         ]);
 
         $anggotaData = $request->only([
@@ -171,11 +172,11 @@ class AnggotaController extends Controller
         $anggota->keanggotaan()->updateOrCreate(
             [
                 'kepengurusan_id' => $validated['kepengurusan_id'],
-                'anggota_id'      => $anggota->id,
+                'anggota_id' => $anggota->id,
             ],
             [
                 'departemen_id' => $validated['departemen_id'] ?? null,
-                'jabatan_id'    => $validated['jabatan_id'],
+                'jabatan_id' => $validated['jabatan_id'],
             ]
         );
 
@@ -194,6 +195,7 @@ class AnggotaController extends Controller
         Kepengurusan::flushCache();
 
         $msg = 'Anggota berhasil dihapus.';
+
         return request()->ajax()
             ? response()->json(['message' => $msg])
             : redirect()->route('anggota.index')->with('success', $msg);

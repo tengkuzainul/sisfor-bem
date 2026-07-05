@@ -14,14 +14,17 @@ class Rekrutmen extends Model
 
     protected $table = 'rekrutmen';
 
-    const STATUS_DRAFT   = 'draft';
-    const STATUS_DIBUKA  = 'dibuka';
+    const STATUS_DRAFT = 'draft';
+
+    const STATUS_DIBUKA = 'dibuka';
+
     const STATUS_DITUTUP = 'ditutup';
+
     const STATUS_SELESAI = 'selesai';
 
     const STATUSES = [
-        self::STATUS_DRAFT   => 'Draft',
-        self::STATUS_DIBUKA  => 'Dibuka',
+        self::STATUS_DRAFT => 'Draft',
+        self::STATUS_DIBUKA => 'Dibuka',
         self::STATUS_DITUTUP => 'Ditutup',
         self::STATUS_SELESAI => 'Selesai',
     ];
@@ -43,7 +46,7 @@ class Rekrutmen extends Model
     protected function casts(): array
     {
         return [
-            'tanggal_mulai'    => 'date',
+            'tanggal_mulai' => 'date',
             'tanggal_berakhir' => 'date',
         ];
     }
@@ -58,7 +61,7 @@ class Rekrutmen extends Model
 
         static::creating(function ($rekrutmen) {
             if (empty($rekrutmen->slug)) {
-                $rekrutmen->slug = Str::slug($rekrutmen->judul) . '-' . Str::random(6);
+                $rekrutmen->slug = Str::slug($rekrutmen->judul).'-'.Str::random(6);
             }
         });
     }
@@ -89,11 +92,11 @@ class Rekrutmen extends Model
     public function getStatusColorAttribute(): string
     {
         return match ($this->status) {
-            self::STATUS_DRAFT   => '#6b7280',
-            self::STATUS_DIBUKA  => '#10b981',
+            self::STATUS_DRAFT => '#6b7280',
+            self::STATUS_DIBUKA => '#10b981',
             self::STATUS_DITUTUP => '#f59e0b',
             self::STATUS_SELESAI => '#3b82f6',
-            default              => '#6b7280',
+            default => '#6b7280',
         };
     }
 
@@ -111,7 +114,7 @@ class Rekrutmen extends Model
     public function scopeOpen($query)
     {
         return $query->where('status', self::STATUS_DIBUKA)
-                     ->where('tanggal_mulai', '<=', now())
-                     ->where('tanggal_berakhir', '>=', now());
+            ->where('tanggal_mulai', '<=', now())
+            ->where('tanggal_berakhir', '>=', now());
     }
 }

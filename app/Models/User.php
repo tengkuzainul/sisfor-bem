@@ -17,13 +17,15 @@ class User extends Authenticatable
        ======================================== */
 
     const ROLE_ADMINISTRATOR = 'administrator';
-    const ROLE_PEMBINA       = 'pembina';
-    const ROLE_PENGURUS      = 'pengurus';
+
+    const ROLE_PEMBINA = 'pembina';
+
+    const ROLE_PENGURUS = 'pengurus';
 
     const ROLES = [
         self::ROLE_ADMINISTRATOR => 'Administrator',
-        self::ROLE_PEMBINA       => 'Pembina',
-        self::ROLE_PENGURUS      => 'Pengurus',
+        self::ROLE_PEMBINA => 'Pembina',
+        self::ROLE_PENGURUS => 'Pengurus',
     ];
 
     protected $fillable = [
@@ -99,9 +101,9 @@ class User extends Authenticatable
     {
         return match ($this->role) {
             self::ROLE_ADMINISTRATOR => '#ef4444',
-            self::ROLE_PEMBINA       => '#f59e0b',
-            self::ROLE_PENGURUS      => '#3b82f6',
-            default                  => '#6b7280',
+            self::ROLE_PEMBINA => '#f59e0b',
+            self::ROLE_PENGURUS => '#3b82f6',
+            default => '#6b7280',
         };
     }
 }

@@ -29,7 +29,7 @@ class ProgramKerja extends Model
     protected function casts(): array
     {
         return [
-            'tanggal_mulai'   => 'date',
+            'tanggal_mulai' => 'date',
             'tanggal_selesai' => 'date',
         ];
     }
@@ -67,9 +67,9 @@ class ProgramKerja extends Model
         return match ($this->status) {
             'coming_soon' => 'Coming Soon',
             'berlangsung' => 'Berlangsung',
-            'pending'     => 'Pending / Undur',
-            'selesai'     => 'Selesai',
-            default       => ucfirst($this->status),
+            'pending' => 'Pending / Undur',
+            'selesai' => 'Selesai',
+            default => ucfirst($this->status),
         };
     }
 
@@ -78,9 +78,9 @@ class ProgramKerja extends Model
         return match ($this->status) {
             'coming_soon' => 'info',
             'berlangsung' => 'warning',
-            'pending'     => 'danger',
-            'selesai'     => 'success',
-            default       => 'gray',
+            'pending' => 'danger',
+            'selesai' => 'success',
+            default => 'gray',
         };
     }
 

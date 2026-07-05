@@ -12,24 +12,28 @@ class PendaftarReview extends Model
 
     protected $table = 'pendaftar_review';
 
-    const TIPE_SARAN       = 'saran';
-    const TIPE_KRITIK      = 'kritik';
+    const TIPE_SARAN = 'saran';
+
+    const TIPE_KRITIK = 'kritik';
+
     const TIPE_REKOMENDASI = 'rekomendasi';
 
     const TIPE_LABELS = [
-        self::TIPE_SARAN       => 'Saran',
-        self::TIPE_KRITIK      => 'Kritik',
+        self::TIPE_SARAN => 'Saran',
+        self::TIPE_KRITIK => 'Kritik',
         self::TIPE_REKOMENDASI => 'Rekomendasi',
     ];
 
-    const REKOMENDASI_DIREKOMENDASIKAN       = 'direkomendasikan';
+    const REKOMENDASI_DIREKOMENDASIKAN = 'direkomendasikan';
+
     const REKOMENDASI_TIDAK_DIREKOMENDASIKAN = 'tidak_direkomendasikan';
-    const REKOMENDASI_NETRAL                 = 'netral';
+
+    const REKOMENDASI_NETRAL = 'netral';
 
     const REKOMENDASI_LABELS = [
-        self::REKOMENDASI_DIREKOMENDASIKAN       => 'Direkomendasikan',
+        self::REKOMENDASI_DIREKOMENDASIKAN => 'Direkomendasikan',
         self::REKOMENDASI_TIDAK_DIREKOMENDASIKAN => 'Tidak Direkomendasikan',
-        self::REKOMENDASI_NETRAL                 => 'Netral',
+        self::REKOMENDASI_NETRAL => 'Netral',
     ];
 
     protected $fillable = [
@@ -72,27 +76,33 @@ class PendaftarReview extends Model
     public function getTipeColorAttribute(): string
     {
         return match ($this->tipe) {
-            self::TIPE_SARAN       => '#3b82f6',
-            self::TIPE_KRITIK      => '#ef4444',
+            self::TIPE_SARAN => '#3b82f6',
+            self::TIPE_KRITIK => '#ef4444',
             self::TIPE_REKOMENDASI => '#10b981',
-            default                => '#6b7280',
+            default => '#6b7280',
         };
     }
 
     public function getRekomendasiLabelAttribute(): ?string
     {
-        if (!$this->rekomendasi_status) return null;
+        if (! $this->rekomendasi_status) {
+            return null;
+        }
+
         return self::REKOMENDASI_LABELS[$this->rekomendasi_status] ?? ucfirst($this->rekomendasi_status);
     }
 
     public function getRekomendasiColorAttribute(): ?string
     {
-        if (!$this->rekomendasi_status) return null;
+        if (! $this->rekomendasi_status) {
+            return null;
+        }
+
         return match ($this->rekomendasi_status) {
-            self::REKOMENDASI_DIREKOMENDASIKAN       => '#10b981',
+            self::REKOMENDASI_DIREKOMENDASIKAN => '#10b981',
             self::REKOMENDASI_TIDAK_DIREKOMENDASIKAN => '#ef4444',
-            self::REKOMENDASI_NETRAL                 => '#f59e0b',
-            default                                  => '#6b7280',
+            self::REKOMENDASI_NETRAL => '#f59e0b',
+            default => '#6b7280',
         };
     }
 }

@@ -6,7 +6,6 @@ use App\Models\Departemen;
 use App\Models\Pendaftar;
 use App\Models\Rekrutmen;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class PendaftaranController extends Controller
 {
@@ -31,7 +30,7 @@ class PendaftaranController extends Controller
     {
         $rekrutmen = Rekrutmen::where('slug', $slug)->firstOrFail();
 
-        if (!$rekrutmen->is_open) {
+        if (! $rekrutmen->is_open) {
             return redirect()->route('pendaftaran.index')
                 ->with('error', 'Pendaftaran untuk rekrutmen ini sudah ditutup.');
         }
@@ -50,36 +49,36 @@ class PendaftaranController extends Controller
     {
         $rekrutmen = Rekrutmen::where('slug', $slug)->firstOrFail();
 
-        if (!$rekrutmen->is_open) {
+        if (! $rekrutmen->is_open) {
             return redirect()->route('pendaftaran.index')
                 ->with('error', 'Pendaftaran untuk rekrutmen ini sudah ditutup.');
         }
 
         $validated = $request->validate([
             // Step 1 — Data Pribadi
-            'nama_lengkap'       => 'required|string|max:255',
-            'nim'                => 'required|string|max:30',
-            'email'              => 'required|email|max:255',
-            'no_hp'              => 'required|string|max:20',
-            'tempat_lahir'       => 'required|string|max:100',
-            'tanggal_lahir'      => 'required|date',
-            'jenis_kelamin'      => 'required|in:L,P',
-            'prodi'              => 'required|string|max:100',
-            'angkatan'           => 'required|string|max:4',
-            'alamat'             => 'required|string',
-            'foto'               => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'nama_lengkap' => 'required|string|max:255',
+            'nim' => 'required|string|max:30',
+            'email' => 'required|email|max:255',
+            'no_hp' => 'required|string|max:20',
+            'tempat_lahir' => 'required|string|max:100',
+            'tanggal_lahir' => 'required|date',
+            'jenis_kelamin' => 'required|in:L,P',
+            'prodi' => 'required|string|max:100',
+            'angkatan' => 'required|string|max:4',
+            'alamat' => 'required|string',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
 
             // Step 2 — Pilihan & Motivasi
             'departemen_pilihan_1' => 'required|exists:departemen,id',
             'departemen_pilihan_2' => 'nullable|exists:departemen,id|different:departemen_pilihan_1',
-            'motivasi'             => 'required|string|min:50',
+            'motivasi' => 'required|string|min:50',
             'pengalaman_organisasi' => 'nullable|string',
-            'keahlian'             => 'nullable|string',
+            'keahlian' => 'nullable|string',
 
             // Step 3 — Dokumen
-            'cv_file'            => 'nullable|mimes:pdf|max:5120',
-            'sertifikat_file'    => 'nullable|mimes:pdf,jpg,jpeg,png|max:5120',
-            'link_portfolio'     => 'nullable|url|max:500',
+            'cv_file' => 'nullable|mimes:pdf|max:5120',
+            'sertifikat_file' => 'nullable|mimes:pdf,jpg,jpeg,png|max:5120',
+            'link_portfolio' => 'nullable|url|max:500',
         ]);
 
         // Cek NIM sudah terdaftar di rekrutmen yang sama

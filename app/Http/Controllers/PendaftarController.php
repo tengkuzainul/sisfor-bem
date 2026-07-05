@@ -23,9 +23,9 @@ class PendaftarController extends Controller
             if ($search = $request->input('search')) {
                 $query->where(function ($q) use ($search) {
                     $q->where('nama_lengkap', 'like', "%{$search}%")
-                      ->orWhere('nim', 'like', "%{$search}%")
-                      ->orWhere('kode_pendaftaran', 'like', "%{$search}%")
-                      ->orWhere('email', 'like', "%{$search}%");
+                        ->orWhere('nim', 'like', "%{$search}%")
+                        ->orWhere('kode_pendaftaran', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%");
                 });
             }
 
@@ -40,11 +40,11 @@ class PendaftarController extends Controller
             if ($deptId = $request->input('departemen_id')) {
                 $query->where(function ($q) use ($deptId) {
                     $q->where('departemen_pilihan_1', $deptId)
-                      ->orWhere('departemen_pilihan_2', $deptId);
+                        ->orWhere('departemen_pilihan_2', $deptId);
                 });
             }
 
-            $sortBy  = $request->input('sort_by', 'created_at');
+            $sortBy = $request->input('sort_by', 'created_at');
             $sortDir = $request->input('sort_dir', 'desc');
             $query->orderBy($sortBy, $sortDir);
 
@@ -83,9 +83,9 @@ class PendaftarController extends Controller
     public function review(Request $request, Pendaftar $pendaftar)
     {
         $validated = $request->validate([
-            'tipe'               => 'required|in:saran,kritik,rekomendasi',
-            'komentar'           => 'required|string|min:10',
-            'departemen_id'      => 'nullable|exists:departemen,id',
+            'tipe' => 'required|in:saran,kritik,rekomendasi',
+            'komentar' => 'required|string|min:10',
+            'departemen_id' => 'nullable|exists:departemen,id',
             'rekomendasi_status' => 'nullable|required_if:tipe,rekomendasi|in:direkomendasikan,tidak_direkomendasikan,netral',
         ]);
 
@@ -103,16 +103,17 @@ class PendaftarController extends Controller
     public function updateStatus(Request $request, Pendaftar $pendaftar)
     {
         $request->validate([
-            'status'       => 'required|in:mendaftar,review,wawancara,diterima,ditolak,cadangan',
+            'status' => 'required|in:mendaftar,review,wawancara,diterima,ditolak,cadangan',
             'catatan_admin' => 'nullable|string',
         ]);
 
         $pendaftar->update([
-            'status'       => $request->status,
+            'status' => $request->status,
             'catatan_admin' => $request->catatan_admin ?? $pendaftar->catatan_admin,
         ]);
 
         $msg = "Status pendaftar berhasil diubah menjadi \"{$pendaftar->status_label}\".";
+
         return request()->ajax()
             ? response()->json(['message' => $msg])
             : back()->with('success', $msg);

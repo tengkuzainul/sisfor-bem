@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Anggota;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
 class UserController extends Controller
@@ -18,12 +17,12 @@ class UserController extends Controller
             if ($search = $request->input('search')) {
                 $query->where(function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%")
-                      ->orWhere('email', 'like', "%{$search}%")
-                      ->orWhere('role', 'like', "%{$search}%");
+                        ->orWhere('email', 'like', "%{$search}%")
+                        ->orWhere('role', 'like', "%{$search}%");
                 });
             }
 
-            $sortBy  = $request->input('sort_by', 'name');
+            $sortBy = $request->input('sort_by', 'name');
             $sortDir = $request->input('sort_dir', 'asc');
             $query->orderBy($sortBy, $sortDir);
 
@@ -31,6 +30,7 @@ class UserController extends Controller
 
             $paginated->getCollection()->transform(function ($user) {
                 $user->append(['role_label', 'role_color']);
+
                 return $user;
             });
 
@@ -53,18 +53,18 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'       => 'required|string|max:255',
-            'email'      => 'required|email|unique:users',
-            'password'   => 'required|string|min:6|confirmed',
-            'role'       => 'required|in:' . implode(',', array_keys(User::ROLES)),
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|string|min:6|confirmed',
+            'role' => 'required|in:'.implode(',', array_keys(User::ROLES)),
             'anggota_id' => 'nullable|exists:anggota,id',
         ]);
 
         $user = User::create([
-            'name'       => $request->name,
-            'email'      => $request->email,
-            'password'   => $request->password,
-            'role'       => $request->role,
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password,
+            'role' => $request->role,
             'anggota_id' => $request->anggota_id ?: null,
         ]);
 
@@ -80,7 +80,7 @@ class UserController extends Controller
     {
         $anggotaList = Anggota::where(function ($q) use ($user) {
             $q->whereDoesntHave('user')
-              ->orWhere('id', $user->anggota_id);
+                ->orWhere('id', $user->anggota_id);
         })->orderBy('nama')->get(['id', 'nama', 'nim']);
 
         $roles = User::ROLES;
@@ -91,10 +91,10 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $request->validate([
-            'name'       => 'required|string|max:255',
-            'email'      => ['required', 'email', Rule::unique('users')->ignore($user->id)],
-            'password'   => 'nullable|string|min:6|confirmed',
-            'role'       => 'required|in:' . implode(',', array_keys(User::ROLES)),
+            'name' => 'required|string|max:255',
+            'email' => ['required', 'email', Rule::unique('users')->ignore($user->id)],
+            'password' => 'nullable|string|min:6|confirmed',
+            'role' => 'required|in:'.implode(',', array_keys(User::ROLES)),
             'anggota_id' => 'nullable|exists:anggota,id',
         ]);
 
@@ -104,9 +104,9 @@ class UserController extends Controller
         }
 
         $user->update([
-            'name'       => $request->name,
-            'email'      => $request->email,
-            'role'       => $request->role,
+            'name' => $request->name,
+            'email' => $request->email,
+            'role' => $request->role,
             'anggota_id' => $request->anggota_id ?: null,
         ]);
 
@@ -132,6 +132,7 @@ class UserController extends Controller
         $user->delete();
 
         $msg = 'Pengguna berhasil dihapus.';
+
         return request()->ajax()
             ? response()->json(['message' => $msg])
             : redirect()->route('users.index')->with('success', $msg);

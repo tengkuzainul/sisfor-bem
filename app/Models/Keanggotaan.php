@@ -27,7 +27,7 @@ class Keanggotaan extends Model
     {
         return [
             'tanggal_bergabung' => 'date',
-            'tanggal_selesai'   => 'date',
+            'tanggal_selesai' => 'date',
         ];
     }
 

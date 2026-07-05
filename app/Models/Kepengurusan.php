@@ -27,9 +27,9 @@ class Kepengurusan extends Model
     protected function casts(): array
     {
         return [
-            'tanggal_mulai'   => 'date',
+            'tanggal_mulai' => 'date',
             'tanggal_selesai' => 'date',
-            'is_active'       => 'boolean',
+            'is_active' => 'boolean',
         ];
     }
 

@@ -42,10 +42,10 @@ class ProposalReview extends Model
     {
         return match ($this->aksi) {
             'komentar' => 'Komentar',
-            'revisi'   => 'Minta Revisi',
-            'approve'  => 'Approve',
-            'tolak'    => 'Tolak',
-            default    => ucfirst($this->aksi),
+            'revisi' => 'Minta Revisi',
+            'approve' => 'Approve',
+            'tolak' => 'Tolak',
+            default => ucfirst($this->aksi),
         };
     }
 
@@ -53,10 +53,10 @@ class ProposalReview extends Model
     {
         return match ($this->aksi) {
             'komentar' => '#3b82f6',
-            'revisi'   => '#f59e0b',
-            'approve'  => '#22c55e',
-            'tolak'    => '#ef4444',
-            default    => '#6b7280',
+            'revisi' => '#f59e0b',
+            'approve' => '#22c55e',
+            'tolak' => '#ef4444',
+            default => '#6b7280',
         };
     }
 }

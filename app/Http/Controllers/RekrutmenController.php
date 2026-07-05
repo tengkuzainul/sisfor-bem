@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Rekrutmen;
 use App\Models\Kepengurusan;
+use App\Models\Rekrutmen;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -18,7 +18,7 @@ class RekrutmenController extends Controller
             if ($search = $request->input('search')) {
                 $query->where(function ($q) use ($search) {
                     $q->where('judul', 'like', "%{$search}%")
-                      ->orWhere('deskripsi', 'like', "%{$search}%");
+                        ->orWhere('deskripsi', 'like', "%{$search}%");
                 });
             }
 
@@ -26,7 +26,7 @@ class RekrutmenController extends Controller
                 $query->where('status', $status);
             }
 
-            $sortBy  = $request->input('sort_by', 'created_at');
+            $sortBy = $request->input('sort_by', 'created_at');
             $sortDir = $request->input('sort_dir', 'desc');
             $query->orderBy($sortBy, $sortDir);
 
@@ -41,20 +41,21 @@ class RekrutmenController extends Controller
     public function create()
     {
         $kepengurusan = Kepengurusan::orderByDesc('tanggal_mulai')->get();
+
         return view('rekrutmen.create', compact('kepengurusan'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'kepengurusan_id'  => 'required|exists:kepengurusan,id',
-            'judul'            => 'required|string|max:255',
-            'deskripsi'        => 'nullable|string',
-            'persyaratan'      => 'nullable|string',
-            'tanggal_mulai'    => 'required|date',
+            'kepengurusan_id' => 'required|exists:kepengurusan,id',
+            'judul' => 'required|string|max:255',
+            'deskripsi' => 'nullable|string',
+            'persyaratan' => 'nullable|string',
+            'tanggal_mulai' => 'required|date',
             'tanggal_berakhir' => 'required|date|after:tanggal_mulai',
-            'poster'           => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'status'           => 'required|in:draft,dibuka,ditutup,selesai',
+            'poster' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'status' => 'required|in:draft,dibuka,ditutup,selesai',
         ]);
 
         if ($request->hasFile('poster')) {
@@ -72,13 +73,13 @@ class RekrutmenController extends Controller
         $rekrutmen->load(['kepengurusan', 'pendaftar.departemenPilihan1', 'pendaftar.departemenPilihan2']);
 
         $stats = [
-            'total'     => $rekrutmen->pendaftar->count(),
+            'total' => $rekrutmen->pendaftar->count(),
             'mendaftar' => $rekrutmen->pendaftar->where('status', 'mendaftar')->count(),
-            'review'    => $rekrutmen->pendaftar->where('status', 'review')->count(),
+            'review' => $rekrutmen->pendaftar->where('status', 'review')->count(),
             'wawancara' => $rekrutmen->pendaftar->where('status', 'wawancara')->count(),
-            'diterima'  => $rekrutmen->pendaftar->where('status', 'diterima')->count(),
-            'ditolak'   => $rekrutmen->pendaftar->where('status', 'ditolak')->count(),
-            'cadangan'  => $rekrutmen->pendaftar->where('status', 'cadangan')->count(),
+            'diterima' => $rekrutmen->pendaftar->where('status', 'diterima')->count(),
+            'ditolak' => $rekrutmen->pendaftar->where('status', 'ditolak')->count(),
+            'cadangan' => $rekrutmen->pendaftar->where('status', 'cadangan')->count(),
         ];
 
         return view('rekrutmen.show', compact('rekrutmen', 'stats'));
@@ -87,20 +88,21 @@ class RekrutmenController extends Controller
     public function edit(Rekrutmen $rekrutmen)
     {
         $kepengurusan = Kepengurusan::orderByDesc('tanggal_mulai')->get();
+
         return view('rekrutmen.edit', compact('rekrutmen', 'kepengurusan'));
     }
 
     public function update(Request $request, Rekrutmen $rekrutmen)
     {
         $validated = $request->validate([
-            'kepengurusan_id'  => 'required|exists:kepengurusan,id',
-            'judul'            => 'required|string|max:255',
-            'deskripsi'        => 'nullable|string',
-            'persyaratan'      => 'nullable|string',
-            'tanggal_mulai'    => 'required|date',
+            'kepengurusan_id' => 'required|exists:kepengurusan,id',
+            'judul' => 'required|string|max:255',
+            'deskripsi' => 'nullable|string',
+            'persyaratan' => 'nullable|string',
+            'tanggal_mulai' => 'required|date',
             'tanggal_berakhir' => 'required|date|after:tanggal_mulai',
-            'poster'           => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'status'           => 'required|in:draft,dibuka,ditutup,selesai',
+            'poster' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'status' => 'required|in:draft,dibuka,ditutup,selesai',
         ]);
 
         if ($request->hasFile('poster')) {
@@ -121,6 +123,7 @@ class RekrutmenController extends Controller
     {
         if ($rekrutmen->pendaftar()->count() > 0) {
             $msg = 'Rekrutmen tidak dapat dihapus karena masih memiliki pendaftar.';
+
             return request()->ajax()
                 ? response()->json(['message' => $msg], 422)
                 : back()->with('error', $msg);
@@ -133,6 +136,7 @@ class RekrutmenController extends Controller
         $rekrutmen->delete();
 
         $msg = 'Data rekrutmen berhasil dihapus.';
+
         return request()->ajax()
             ? response()->json(['message' => $msg])
             : redirect()->route('rekrutmen.index')->with('success', $msg);
@@ -147,6 +151,7 @@ class RekrutmenController extends Controller
         $rekrutmen->update(['status' => $request->status]);
 
         $msg = "Status rekrutmen berhasil diubah menjadi \"{$rekrutmen->status_label}\".";
+
         return request()->ajax()
             ? response()->json(['message' => $msg])
             : back()->with('success', $msg);

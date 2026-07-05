@@ -153,7 +153,7 @@
                  x-transition
                  @click.outside="open = false"
                  class="absolute right-0 top-full mt-2 w-48 rounded-xl border border-gray-200 bg-white py-1 shadow-lg dark:border-gray-700 dark:bg-gray-800">
-                <a href="#" class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700">
+                <a href="{{ route('profile.show') }}" class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700">
                     <x-heroicon-o-user-circle class="h-4 w-4" /> Profil
                 </a>
                 <hr class="my-1 border-gray-100 dark:border-gray-700">

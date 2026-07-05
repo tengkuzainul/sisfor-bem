@@ -9,7 +9,6 @@ use App\Models\Keanggotaan;
 use App\Models\Kepengurusan;
 use App\Models\ProgramKerja;
 use App\Models\Rekrutmen;
-use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
@@ -17,12 +16,12 @@ class HomeController extends Controller
     {
         $kepengurusan = Kepengurusan::getActive();
 
-        if (!$kepengurusan) {
+        if (! $kepengurusan) {
             return view('home', [
                 'kepengurusan' => null,
-                'departemen'   => collect(),
-                'jabatan'      => collect(),
-                'bph'          => collect(),
+                'departemen' => collect(),
+                'jabatan' => collect(),
+                'bph' => collect(),
                 'anggotaByDept' => collect(),
                 'totalAnggota' => 0,
                 'upcomingProker' => collect(),

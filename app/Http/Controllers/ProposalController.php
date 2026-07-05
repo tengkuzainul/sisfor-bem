@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kepengurusan;
 use App\Models\ProgramKerja;
 use App\Models\ProposalKegiatan;
 use App\Models\ProposalReview;
-use App\Models\Kepengurusan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -33,8 +33,8 @@ class ProposalController extends Controller
             if ($search = $request->input('search')) {
                 $query->where(function ($q) use ($search) {
                     $q->where('judul', 'like', "%{$search}%")
-                        ->orWhereHas('programKerja', fn($q2) => $q2->where('nama', 'like', "%{$search}%"))
-                        ->orWhereHas('pengaju', fn($q2) => $q2->where('name', 'like', "%{$search}%"));
+                        ->orWhereHas('programKerja', fn ($q2) => $q2->where('nama', 'like', "%{$search}%"))
+                        ->orWhereHas('pengaju', fn ($q2) => $q2->where('name', 'like', "%{$search}%"));
                 });
             }
 
@@ -42,13 +42,14 @@ class ProposalController extends Controller
                 $query->where('status', $status);
             }
 
-            $sortBy  = $request->input('sort_by', 'created_at');
+            $sortBy = $request->input('sort_by', 'created_at');
             $sortDir = $request->input('sort_dir', 'desc');
             $query->orderBy($sortBy, $sortDir);
 
             $paginated = $query->paginate($request->input('per_page', 10));
             $paginated->getCollection()->transform(function ($p) {
                 $p->append(['status_label', 'status_color', 'step_label']);
+
                 return $p;
             });
 
@@ -78,20 +79,20 @@ class ProposalController extends Controller
     {
         $request->validate([
             'program_kerja_id' => 'required|exists:program_kerja,id',
-            'judul'            => 'required|string|max:255',
-            'file_proposal'    => 'required|file|mimes:pdf|max:10240',
-            'catatan_pengaju'  => 'nullable|string',
+            'judul' => 'required|string|max:255',
+            'file_proposal' => 'required|file|mimes:pdf|max:10240',
+            'catatan_pengaju' => 'nullable|string',
         ]);
 
         $path = $request->file('file_proposal')->store('proposal', 'public');
 
         $proposal = ProposalKegiatan::create([
             'program_kerja_id' => $request->program_kerja_id,
-            'user_id'          => $request->user()->id,
-            'judul'            => $request->judul,
-            'file_proposal'    => $path,
-            'catatan_pengaju'  => $request->catatan_pengaju,
-            'status'           => ProposalKegiatan::STATUS_DIAJUKAN,
+            'user_id' => $request->user()->id,
+            'judul' => $request->judul,
+            'file_proposal' => $path,
+            'catatan_pengaju' => $request->catatan_pengaju,
+            'status' => ProposalKegiatan::STATUS_DIAJUKAN,
         ]);
 
         return redirect()->route('proposal.show', $proposal)
@@ -116,13 +117,13 @@ class ProposalController extends Controller
         $user = $request->user();
 
         // Only pengaju can revise their own proposal
-        if ($proposal->user_id !== $user->id || !$proposal->canRevise()) {
+        if ($proposal->user_id !== $user->id || ! $proposal->canRevise()) {
             abort(403);
         }
 
         $request->validate([
             'file_proposal' => 'required|file|mimes:pdf|max:10240',
-            'catatan'       => 'nullable|string',
+            'catatan' => 'nullable|string',
         ]);
 
         // Delete old file
@@ -142,10 +143,10 @@ class ProposalController extends Controller
         // Log the revision upload
         ProposalReview::create([
             'proposal_kegiatan_id' => $proposal->id,
-            'user_id'              => $user->id,
-            'aksi'                 => 'revisi',
-            'komentar'             => $request->catatan ?? 'Mengupload ulang proposal setelah revisi.',
-            'file_lampiran'        => $path,
+            'user_id' => $user->id,
+            'aksi' => 'revisi',
+            'komentar' => $request->catatan ?? 'Mengupload ulang proposal setelah revisi.',
+            'file_lampiran' => $path,
         ]);
 
         return redirect()->route('proposal.show', $proposal)
@@ -160,7 +161,7 @@ class ProposalController extends Controller
         $user = $request->user();
 
         $request->validate([
-            'aksi'     => 'required|in:komentar,revisi,approve,tolak',
+            'aksi' => 'required|in:komentar,revisi,approve,tolak',
             'komentar' => 'nullable|required_if:aksi,revisi,tolak,komentar|string',
         ]);
 
@@ -168,19 +169,19 @@ class ProposalController extends Controller
 
         // Validate reviewer permissions
         if ($user->isPembina()) {
-            if (!$proposal->canReviewByPembina()) {
+            if (! $proposal->canReviewByPembina()) {
                 abort(403, 'Proposal tidak dalam tahap review pembina.');
             }
-        } elseif (!$user->isAdmin()) {
+        } elseif (! $user->isAdmin()) {
             abort(403);
         }
 
         // Create review log
         ProposalReview::create([
             'proposal_kegiatan_id' => $proposal->id,
-            'user_id'              => $user->id,
-            'aksi'                 => $aksi,
-            'komentar'             => $request->komentar,
+            'user_id' => $user->id,
+            'aksi' => $aksi,
+            'komentar' => $request->komentar,
         ]);
 
         // Update proposal status based on action
@@ -202,9 +203,9 @@ class ProposalController extends Controller
 
         $messages = [
             'komentar' => 'Komentar berhasil ditambahkan.',
-            'revisi'   => 'Proposal diminta untuk direvisi.',
-            'approve'  => 'Proposal berhasil disetujui.',
-            'tolak'    => 'Proposal berhasil ditolak.',
+            'revisi' => 'Proposal diminta untuk direvisi.',
+            'approve' => 'Proposal berhasil disetujui.',
+            'tolak' => 'Proposal berhasil ditolak.',
         ];
 
         return redirect()->route('proposal.show', $proposal)

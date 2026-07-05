@@ -17,9 +17,9 @@ class DatabaseSeeder extends Seeder
     {
         // Default admin user
         User::factory()->create([
-            'name'  => 'Administrator',
+            'name' => 'Administrator',
             'email' => 'admin@bem.com',
-            'role'  => 'administrator',
+            'role' => 'administrator',
         ]);
 
         // $this->call([

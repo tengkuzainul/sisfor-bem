@@ -16,7 +16,7 @@ class KategoriProkerController extends Controller
                 $query->where('nama', 'like', "%{$search}%");
             }
 
-            $sortBy  = $request->input('sort_by', 'nama');
+            $sortBy = $request->input('sort_by', 'nama');
             $sortDir = $request->input('sort_dir', 'asc');
             $query->orderBy($sortBy, $sortDir);
 
@@ -36,8 +36,8 @@ class KategoriProkerController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nama'      => 'required|string|max:255',
-            'warna'     => 'required|string|max:7',
+            'nama' => 'required|string|max:255',
+            'warna' => 'required|string|max:7',
             'deskripsi' => 'nullable|string',
         ]);
 
@@ -55,8 +55,8 @@ class KategoriProkerController extends Controller
     public function update(Request $request, KategoriProker $kategoriProker)
     {
         $validated = $request->validate([
-            'nama'      => 'required|string|max:255',
-            'warna'     => 'required|string|max:7',
+            'nama' => 'required|string|max:255',
+            'warna' => 'required|string|max:7',
             'deskripsi' => 'nullable|string',
         ]);
 
@@ -71,6 +71,7 @@ class KategoriProkerController extends Controller
         $kategoriProker->delete();
 
         $msg = 'Kategori program kerja berhasil dihapus.';
+
         return request()->ajax()
             ? response()->json(['message' => $msg])
             : redirect()->route('kategori-proker.index')->with('success', $msg);

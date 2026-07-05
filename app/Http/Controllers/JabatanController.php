@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Jabatan;
 use App\Models\Kepengurusan;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class JabatanController extends Controller
 {
@@ -17,11 +16,11 @@ class JabatanController extends Controller
             if ($search = $request->input('search')) {
                 $query->where(function ($q) use ($search) {
                     $q->where('nama', 'like', "%{$search}%")
-                      ->orWhere('deskripsi', 'like', "%{$search}%");
+                        ->orWhere('deskripsi', 'like', "%{$search}%");
                 });
             }
 
-            $sortBy  = $request->input('sort_by', 'level');
+            $sortBy = $request->input('sort_by', 'level');
             $sortDir = $request->input('sort_dir', 'asc');
             $query->orderBy($sortBy, $sortDir);
 
@@ -41,8 +40,8 @@ class JabatanController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nama'      => 'required|string|max:255',
-            'level'     => 'required|integer|min:0',
+            'nama' => 'required|string|max:255',
+            'level' => 'required|integer|min:0',
             'deskripsi' => 'nullable|string',
         ]);
 
@@ -61,8 +60,8 @@ class JabatanController extends Controller
     public function update(Request $request, Jabatan $jabatan)
     {
         $validated = $request->validate([
-            'nama'      => 'required|string|max:255',
-            'level'     => 'required|integer|min:0',
+            'nama' => 'required|string|max:255',
+            'level' => 'required|integer|min:0',
             'deskripsi' => 'nullable|string',
         ]);
 
@@ -77,6 +76,7 @@ class JabatanController extends Controller
     {
         if ($jabatan->keanggotaan()->exists()) {
             $msg = 'Jabatan sedang digunakan, tidak bisa dihapus.';
+
             return request()->ajax()
                 ? response()->json(['message' => $msg], 422)
                 : back()->with('error', $msg);
@@ -86,6 +86,7 @@ class JabatanController extends Controller
         Kepengurusan::flushCache();
 
         $msg = 'Jabatan berhasil dihapus.';
+
         return request()->ajax()
             ? response()->json(['message' => $msg])
             : redirect()->route('jabatan.index')->with('success', $msg);

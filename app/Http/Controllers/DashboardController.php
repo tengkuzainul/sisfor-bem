@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Anggota;
 use App\Models\Departemen;
-use App\Models\Kepengurusan;
 use App\Models\Keanggotaan;
+use App\Models\Kepengurusan;
 use App\Models\ProgramKerja;
 use App\Models\ProposalKegiatan;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 
 class DashboardController extends Controller
 {
@@ -28,7 +28,7 @@ class DashboardController extends Controller
         $recentActivities = collect();
 
         if ($kepengurusan) {
-            /** @var \Illuminate\Database\Eloquent\Builder $programQuery */
+            /** @var Builder $programQuery */
             $programQuery = ProgramKerja::query()->where('kepengurusan_id', $kepengurusan->id);
 
             $totalProgramKerja = (clone $programQuery)->count('*');
@@ -114,7 +114,7 @@ class DashboardController extends Controller
                     return [
                         'title' => $event->nama,
                         'date' => $event->tanggal_mulai?->format('d M Y') ?? '-',
-                        'time' => $event->tanggal_selesai ? 'Sampai ' . $event->tanggal_selesai->format('d M Y') : '-',
+                        'time' => $event->tanggal_selesai ? 'Sampai '.$event->tanggal_selesai->format('d M Y') : '-',
                         'location' => $event->lokasi ?? '-',
                         'type' => $event->kategori?->nama ?? ucfirst(str_replace('_', ' ', $event->status)),
                         'badgeClass' => $badgeClass,
@@ -153,7 +153,7 @@ class DashboardController extends Controller
                 ->map(function ($proposal) {
                     return [
                         'user' => $proposal->pengaju?->name ?? 'Pengguna',
-                        'action' => 'mengajukan proposal "' . $proposal->judul . '"',
+                        'action' => 'mengajukan proposal "'.$proposal->judul.'"',
                         'time' => $proposal->created_at?->diffForHumans() ?? '-',
                         'icon' => 'document-text',
                         'bgClass' => 'bg-accent-100 dark:bg-accent-900/40',
